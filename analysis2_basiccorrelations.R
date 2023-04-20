@@ -173,3 +173,11 @@ ggplot(filter(value_correlations2, location == "Michigan."), aes(x = city, y = c
   # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
   # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
   facet_wrap(pretty_title ~ pretty_word)
+
+
+value_correlations$corrtype <- "value"
+value_correlations2$corrtype <- "rolling"
+corrs <- rbind(value_correlations, value_correlations2)
+corrs <- filter(corrs, !is.na(over_limit))
+
+
