@@ -132,3 +132,44 @@ ggplot(filter(value_correlations, location == "Michigan."), aes(x = city, y = co
   # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
   # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
   facet_wrap(pretty_title ~ pretty_word)
+
+
+
+value_correlations2 <- combined_trend2 %>% group_by(type, organism, location, pretty_word, city) %>% summarize(correlation=cor(seven_day_rolling_average, Interest, use = "complete.obs"))
+value_correlations2$pretty_title <- paste0(value_correlations2$organism, " (", value_correlations2$type, ")")
+value_correlations2 <- value_correlations2 %>% mutate(over_limit = case_when(correlation > 0.75 ~ "+/- 0.75", 
+                                                                           correlation < -0.75 ~ "+/- 0.75",
+                                                                           correlation > 0.5 ~ "+/- 0.5", 
+                                                                           correlation < -0.5 ~ "+/- 0.5", 
+                                                                           T ~ NA_character_))
+
+ggplot(filter(value_correlations2, location == "Detroit.MI."), aes(x = city, y = correlation)) + 
+  geom_bar(stat = "identity") + 
+  geom_point(aes(x = city, y = correlation, shape = over_limit)) +
+  scale_shape_manual(values = c(1, 8)) +
+  theme_bw() +
+  ylim(-1, 1) +
+  labs(title = "Correlations between Google Trend Interest and Rolling Average Wastewater Measurements",
+       subtitle = "Detroit Region", 
+       x = "", 
+       y = "Correlation Coefficient", 
+       shape = "") +
+  # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
+  # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
+  facet_wrap(pretty_title ~ pretty_word)
+
+
+ggplot(filter(value_correlations2, location == "Michigan."), aes(x = city, y = correlation)) + 
+  geom_bar(stat = "identity") + 
+  geom_point(aes(x = city, y = correlation, shape = over_limit)) +
+  scale_shape_manual(values = c(1, 8)) +
+  theme_bw() +
+  ylim(-1, 1) +
+  labs(title = "Correlations between Google Trend Interest and Rolling Average Wastewater Measurements",
+       subtitle = "Michigan", 
+       x = "", 
+       y = "Correlation Coefficient", 
+       shape = "") +
+  # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
+  # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
+  facet_wrap(pretty_title ~ pretty_word)
