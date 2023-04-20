@@ -1,4 +1,4 @@
-# conf_googletreends_wwtp
+# Google Trends Analysis - Conference Poster
 
 This repository documents the code and analysis done for the poster "Triangulating Transmission Trends: Comparing Google Trends and Wastewater Surveillance Data for Multiple Pathogens" presented at the Go with the Flow: Public Health Wastewater Monitoring in Michigan conference on 17-18 May 2023, in East Lansing, Michigan.
 
