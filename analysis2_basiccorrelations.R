@@ -19,6 +19,14 @@ covid_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_dat
 # norovirus ww influent
 noro_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/norov_wastewater_data_all_cities.csv")
 
+##
+
+ww_data <- rbind(select(covid_ww, Date, city, organism, variable, type, value, seven_day_rolling_average), select(noro_ww, Date, city, organism, variable, type, value, seven_day_rolling_average), select(solid_ww, Date, city, organism, variable, type, value, seven_day_rolling_average))
+
+ww_data$variable[is.na(ww_data$variable)] <- ""
+
+ww_data <- filter(ww_data, organism %in% c("RSV", "Norovirus", "Influenza A", "SARS-CoV-2") & variable != "N2")
+
 
 ################################################################################
 # read in google trends data
@@ -39,7 +47,6 @@ for (i in all_trend_files){
 }
 
 
-#table(combined_trend$keyword)
 
 combined_trend <- combined_trend %>% mutate(organism = case_when(keyword %in% c("covid", "covid.symptoms") ~ "SARS-CoV-2", 
                                                                  keyword %in% c("flu", "flu.symptoms", "influenza", "influenza.symptoms") ~ "Influenza A", 
@@ -49,5 +56,79 @@ combined_trend <- combined_trend %>% mutate(organism = case_when(keyword %in% c(
 
 combined_trend <- combined_trend %>% mutate(pretty_word = paste0('"', gsub("\\.", " ", keyword), '"'))
 
+# need to "fill in" all days for the trend data, so that we maximize joining with ww data
+
+full_date_range <- seq.Date(from = min(as_date(combined_trend$Week)), to = max(as_date(combined_trend$Week)), by = 1)
+
+fullset <- data.frame()
+
+for (each_keyword in unique(combined_trend$keyword)){
+  one_bit <- data.frame(full_date_range)
+  one_bit$keyword <- each_keyword
+  one_bit$location <- "Detroit.MI."
+  fullset <- rbind(fullset, one_bit)
+  
+  one_bit <- data.frame(full_date_range)
+  one_bit$keyword <- each_keyword
+  one_bit$location <- "Michigan."
+  fullset <- rbind(fullset, one_bit)
+}
 
 
+colnames(fullset) <- c("Day", "keyword", "location")
+fullset$Day <- as.character(fullset$Day)
+
+combined_trend$Week <- as.character(combined_trend$Week)
+
+combined_trend <- merge(combined_trend, fullset, by.x = c("Week", "keyword", "location"), by.y = c("Day", "keyword", "location"), all = TRUE)
+
+combined_trend <- combined_trend %>% arrange(location, keyword, Week)
+
+combined_trend <- combined_trend %>% group_by(location, keyword) %>% arrange(Week) %>% fill(c(Interest, organism, pretty_word), .direction = c("down"))
+
+combined_trend <- combined_trend %>% arrange(location, keyword, Week)
+
+combined_trend2 <- merge(combined_trend, ww_data, by.x = c("organism", "Week"), by.y = c("organism", "Date"))
+
+combined_trend2$Interest <- as.numeric(combined_trend2$Interest)
+combined_trend2$value <- as.numeric(combined_trend2$value)
+combined_trend2$seven_day_rolling_average <- as.numeric(combined_trend2$seven_day_rolling_average)
+
+value_correlations <- combined_trend2 %>% group_by(type, organism, location, pretty_word, city) %>% summarize(correlation=cor(value, Interest))
+value_correlations$pretty_title <- paste0(value_correlations$organism, " (", value_correlations$type, ")")
+value_correlations <- value_correlations %>% mutate(over_limit = case_when(correlation > 0.75 ~ "+/- 0.75", 
+                                                                           correlation < -0.75 ~ "+/- 0.75",
+                                                                           correlation > 0.5 ~ "+/- 0.5", 
+                                                                           correlation < -0.5 ~ "+/- 0.5", 
+                                                                           T ~ NA_character_))
+
+ggplot(filter(value_correlations, location == "Detroit.MI."), aes(x = city, y = correlation)) + 
+  geom_bar(stat = "identity") + 
+  geom_point(aes(x = city, y = correlation, shape = over_limit)) +
+  scale_shape_manual(values = c(1, 8)) +
+  theme_bw() +
+  ylim(-1, 1) +
+  labs(title = "Correlations between Google Trend Interest and Wastewater Measurements",
+       subtitle = "Detroit Region", 
+       x = "", 
+       y = "Correlation Coefficient", 
+       shape = "") +
+  # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
+  # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
+  facet_wrap(pretty_title ~ pretty_word)
+
+
+ggplot(filter(value_correlations, location == "Michigan."), aes(x = city, y = correlation)) + 
+  geom_bar(stat = "identity") + 
+  geom_point(aes(x = city, y = correlation, shape = over_limit)) +
+  scale_shape_manual(values = c(1, 8)) +
+  theme_bw() +
+  ylim(-1, 1) +
+  labs(title = "Correlations between Google Trend Interest and Wastewater Measurements",
+       subtitle = "Michigan", 
+       x = "", 
+       y = "Correlation Coefficient", 
+       shape = "") +
+  # geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), linetype = "dashed") +
+  # geom_hline(yintercept = c(-0.75, -0.25, 0.25, 0.75), linetype = "dotted") +
+  facet_wrap(pretty_title ~ pretty_word)
