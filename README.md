@@ -37,10 +37,30 @@ Google Trend data was pulled on 20 April 2023 from https://trends.google.com/tre
 
 Wastewater sample data as of 20 April 2023. All values are PMMoV-normalized. Samples are collected from five wastewater treatment plants from across south-east Michigan.
 
-| Organism | Sample Collection Type | Sample Collection Date Range | Total Samples |
-| --- | --- | --- | --- |
-| SARS-CoV-2 (N1) | Solid |
-| SARS-CoV-2 (N1) | Influent |
-| Influenza A | Solid |
-| Norovirus | Influent |
-| RSV | Solid |
+| Organism | Sample Collection Type | WWTP | Sample Collection Date Range | Total Samples |
+| --- | --- | --- | --- | --- |
+| SARS-CoV-2 (N1) | Solid | AA | 2022-09-21 to 2023-04-10 | 91 |
+| SARS-CoV-2 (N1) | Solid | FL | 2022-09-28 to 2023-04-10 | 84 |
+| SARS-CoV-2 (N1) | Solid | JS | 2022-09-02 to 2023-04-10 | 85 |
+| SARS-CoV-2 (N1) | Solid | TM | 2022-09-22 to 2023-04-11 | 86 |
+| SARS-CoV-2 (N1) | Solid | YC | 2022-09-23 to 2023-04-11 | 83 |
+| SARS-CoV-2 (N1) | Influent | AA | 2021-07-06 to 2023-04-13 | 637 |
+| SARS-CoV-2 (N1) | Influent | FL | 2021-07-12 to 2023-04-13 | 586 |
+| SARS-CoV-2 (N1) | Influent | JS | 2021-07-12 to 2023-04-13 | 529 |
+| SARS-CoV-2 (N1) | Influent | TM | 2022-01-13 to 2023-04-14 | 422 |
+| SARS-CoV-2 (N1) | Influent | YC | 2021-07-08 to 2023-04-13 | 591 |
+| Influenza A | Solid | AA | 2022-09-21 to 2023-04-10 | 98 |
+| Influenza A | Solid | FL | 2022-09-28 to 2023-04-10 | 86 |
+| Influenza A | Solid | JS | 2022-09-02 to 2023-04-10 | 89 |
+| Influenza A | Solid | TM | 2022-09-22 to 2023-04-11 | 91 |
+| Influenza A | Solid | YC | 2022-09-23 to 2023-04-11 | 89 |
+| Norovirus | Influent | AA | 2021-09-07 2023-04-10 | 232 |
+| Norovirus | Influent | FL | 2021-09-14 2023-04-10 | 202 |
+| Norovirus | Influent | JS | 2021-09-07 2023-04-10 | 219 |
+| Norovirus | Influent | TM | 2022-01-13 2023-04-11 | 253 |
+| Norovirus | Influent | YC | 2021-09-14 2023-04-10 | 251 |
+| RSV | Solid | AA | 2022-11-01 to 2023-04-10 | 90 |
+| RSV | Solid | FL | 2022-11-01 to 2023-04-10 | 82 |
+| RSV | Solid | JS | 2022-11-01 to 2023-04-10 | 83 |
+| RSV | Solid | TM | 2022-11-02 to 2023-04-11 | 84 |
+| RSV | Solid | YC | 2022-11-02 t0 2023-04-11 | 81 |
