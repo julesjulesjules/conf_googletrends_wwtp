@@ -4,19 +4,23 @@ This repository documents the code and analysis done for the poster "Triangulati
 
 # Google Trends Data
 
-Google Trend data was pulled on 20 April 2023 from https://trends.google.com/trends/explore?geo=US&hl=en.
+Google Trend data was pulled on 20 April 2023 from https://trends.google.com/trends/explore?geo=US&hl=en. The "Interest Over Time" .csv files were downloaded for each search term and location combination.
 
 | Search Term | Location Area | Time Period | Categories | Search Type |
 | --- | --- | --- | --- | --- |
-| "covid symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "covid" | Detroit MI | Past 5 years | All categories | Web Search |
-| "flu symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "flu" | Detroit MI | Past 5 years | All categories | Web Search |
-| "influenza symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "influenza" | Detroit MI | Past 5 years | All categories | Web Search |
-| "norovirus symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "norovirus" | Detroit MI | Past 5 years | All categories | Web Search |
-| "rsv symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "rsv" | Detroit MI | Past 5 years | All categories | Web Search |
-| "stomach flu symptoms" | Detroit MI | Past 5 years | All categories | Web Search |
-| "stomach flu" | Detroit MI | Past 5 years | All categories | Web Search |
+| "covid symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "covid" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "flu symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "flu" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "influenza symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "influenza" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "norovirus symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "norovirus" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "rsv symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "rsv" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "stomach flu symptoms" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+| "stomach flu" | Michigan, Detroit MI | Past 5 years | All categories | Web Search |
+
+![](/image_files/google_trends_regions.PNG "Google Trends Search Regions")
+
+# Wastewater Treatment Plant Concentration Measurement Data
