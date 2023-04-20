@@ -29,3 +29,16 @@ noro_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data
 filter(noro_ww) %>% group_by(city, organism, variable) %>% summarize(min_date = min(Date), 
                                                                                         max_date = max(Date), 
                                                                                         total_count = length(value))
+
+
+
+################################################################################
+# read in google trends data
+
+
+
+################################################################################
+# make a chart of google trends data with zone of sample data highlighted
+
+
+
