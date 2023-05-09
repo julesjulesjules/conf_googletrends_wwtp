@@ -78,7 +78,7 @@ combined_trend2 <- merge(combined_trend, ww_data2, by.x = c("organism"), by.y = 
 
 ggplot(combined_trend2, aes(x = as_date(Week), y = as.numeric(Interest), color = location)) + 
   geom_line(size = 1, alpha = 0.6) + 
-  geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.7) + 
+  geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.3) + 
   theme_bw() +
   scale_color_manual(values = c("#7F636E", "#003559")) + 
   labs(x = "",

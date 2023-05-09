@@ -181,3 +181,15 @@ corrs <- rbind(value_correlations, value_correlations2)
 corrs <- filter(corrs, !is.na(over_limit))
 
 
+a <- filter(value_correlations, organism == "SARS-CoV-2" & type == "SOLID")
+a$fully <- paste0(a$location, " + ", a$pretty_word)
+
+ggplot(a, aes(x = city, y = fully, fill = correlation)) + 
+  geom_tile() +
+  scale_fill_gradient2(limits=c(-1, 1), breaks=seq(-1,1,by=0.25), low="#3B3561", mid = "white", high="#51A3A3", midpoint = 0) + 
+  theme_bw() + 
+  labs(x = "", 
+       y = "", 
+       fill = "Correlation", 
+       title = paste0(unique(a$pretty_title))) + 
+  geom_text(data = a, aes(x = city, y = fully, label = round(correlation, 4)))
