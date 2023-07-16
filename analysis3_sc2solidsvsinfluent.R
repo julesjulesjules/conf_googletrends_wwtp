@@ -11,11 +11,11 @@ library(lubridate)
 
 # solids 
 solid_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/solid_wastewater_data_all_cities.csv")
-
+solid_ww <- filter(solid_ww, organism != "SARS-CoV-2")
 
 # covid ww influent
 covid_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/covid_wastewater_data_all_cities.csv")
-
+covid_ww <- filter(covid_ww, type != "SOLID")
 
 # norovirus ww influent
 noro_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/norov_wastewater_data_all_cities.csv")
@@ -28,6 +28,7 @@ ww_data$variable[is.na(ww_data$variable)] <- ""
 
 ww_data <- filter(ww_data, organism %in% c("RSV", "Norovirus", "Influenza A", "SARS-CoV-2") & variable != "N2")
 
+ww_data <- ww_data %>% arrange(city, organism, Date) %>% distinct(Date, city, organism, .keep_all = TRUE)
 
 ################################################################################
 # read in google trends data
@@ -143,7 +144,7 @@ ggplot(test_two, aes(x = as_date(Week), y = value)) +
   theme_bw() + 
   labs(x = "", 
        y = "", 
-       title = "Blue = Google Trend for Michigan vs. Black = Influent SARS-CoV-2 Detection")
+       title = "Blue = Google Trend for Michigan vs. Black = Influent SARS-CoV-2 Detection at AA WWTP")
 
 
 test_two_early <- filter(test_two, as_date(Week) <= as_date("2022-01-01"))
