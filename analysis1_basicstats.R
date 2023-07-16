@@ -97,17 +97,25 @@ ww_data3 <- ww_data3 %>% mutate(cutout = case_when(organism == "SARS-CoV-2" & ty
 ww_data3 <- filter(ww_data3, cutout == "in")
 
 
-ww_data3a <- filter(ww_data3, organism == "RSV" & value < 0.001)
+ww_data3a <- filter(ww_data3, organism == "RSV" & value < 0.001) %>% distinct(Date, city, .keep_all = TRUE)
+
+max(ww_data3a$Date)
+min(ww_data3a$Date)
+
+sample_count <- ww_data3a %>% group_by(city, year(Date), epiweek(Date)) %>% summarize(sample_count = length(value))
+mean(sample_count$sample_count)
+
 combined_trenda <- filter(combined_trend, organism == "RSV" )
 
 combined_trenda <- filter(combined_trenda, as_date(Week) >= as_date("2022-07-01"))
 
 ggplot() + 
-  geom_line(data = combined_trenda, aes(x = as_date(Week), y = as.numeric(Interest)/100000, color = pretty_word), size = 1, alpha = 0.6) + 
+  geom_line(data = combined_trenda, aes(x = as_date(Week), y = as.numeric(Interest)/100000, color = pretty_word), size = 1, alpha = 0.8) + 
   geom_point(data = ww_data3a, aes(x = as_date(Date), y = value), alpha = 0.3) +
   # geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.3) + 
   theme_bw() +
-  # scale_color_manual(values = c("#7F636E", "#003559")) + 
+  scale_x_date(date_labels = "%b %Y") +
+  scale_color_manual(values = c("#E85F5C", "#7D8491", "#E0C200", "#57C4E5")) + 
   labs(x = "",
        #y = "Google Trends Interest Count", 
        color = "Keyword") +
@@ -116,6 +124,100 @@ ggplot() +
     name = "PMMoV-Normalized Wastewater Detection",
     # Add a second axis and specify its features
     sec.axis = sec_axis( trans=~.*100000, name="Google Trends Interest Count")
+  ) +
+  facet_wrap(.~organism+location, scale = "free")
+
+
+ww_data3a <- filter(ww_data3, organism == "SARS-CoV-2") %>% distinct(Date, city, .keep_all = TRUE)
+
+max(ww_data3a$Date)
+min(ww_data3a$Date)
+
+sample_count <- ww_data3a %>% group_by(city, year(Date), epiweek(Date)) %>% summarize(sample_count = length(value))
+mean(sample_count$sample_count)
+
+combined_trenda <- filter(combined_trend, organism == "SARS-CoV-2" )
+
+combined_trenda <-  filter(combined_trenda, as_date(Week) >= as_date("2021-06-01"))
+
+ggplot() + 
+  geom_point(data = ww_data3a, aes(x = as_date(Date), y = value), alpha = 0.2) +
+  geom_line(data = combined_trenda, aes(x = as_date(Week), y = as.numeric(Interest)/10000, color = pretty_word), size = 1, alpha = 0.8) + 
+  # geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.3) + 
+  theme_bw() +
+  scale_x_date(date_labels = "%b %Y") +
+  scale_color_manual(values = c("#E0C200", "#57C4E5", "#E85F5C", "#7D8491")) + 
+  labs(x = "",
+       #y = "Google Trends Interest Count", 
+       color = "Keyword") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "PMMoV-Normalized Wastewater Detection",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( trans=~.*10000, name="Google Trends Interest Count")
+  ) +
+  facet_wrap(.~organism+location, scale = "free")
+
+
+
+ww_data3a <- filter(ww_data3, organism == "Influenza A") %>% arrange(city, Date) %>% distinct(Date, city, .keep_all = TRUE)
+
+max(ww_data3a$Date)
+min(ww_data3a$Date)
+
+sample_count <- ww_data3a %>% group_by(city, year(Date), epiweek(Date)) %>% summarize(sample_count = length(value))
+mean(sample_count$sample_count)
+
+combined_trenda <- filter(combined_trend, organism == "Influenza A" ) 
+
+combined_trenda <- filter(combined_trenda, as_date(Week) >= as_date("2022-07-01"))
+
+ggplot() + 
+  geom_line(data = combined_trenda, aes(x = as_date(Week), y = as.numeric(Interest)/100000, color = pretty_word), size = 1, alpha = 0.8) + 
+  geom_point(data = ww_data3a, aes(x = as_date(Date), y = value), alpha = 0.3) +
+  # geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.3) + 
+  theme_bw() +
+  scale_x_date(date_labels = "%b %Y") +
+  scale_color_manual(values = c("#E85F5C", "#7D8491", "#E0C200", "#57C4E5")) + 
+  labs(x = "",
+       #y = "Google Trends Interest Count", 
+       color = "Keyword") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "PMMoV-Normalized Wastewater Detection",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( trans=~.*100000, name="Google Trends Interest Count")
+  ) +
+  facet_wrap(.~organism+location, scale = "free")
+
+
+ww_data3a <- filter(ww_data3, organism == "Norovirus") %>% arrange(city, Date) %>% distinct(Date, city, .keep_all = TRUE)
+
+max(ww_data3a$Date)
+min(ww_data3a$Date)
+
+sample_count <- ww_data3a %>% group_by(city, year(Date), epiweek(Date)) %>% summarize(sample_count = length(value))
+mean(sample_count$sample_count)
+
+combined_trenda <- filter(combined_trend, organism == "Norovirus" )
+
+combined_trenda <- filter(combined_trenda, as_date(Week) >= as_date("2021-07-01"))
+
+ggplot() + 
+  geom_line(data = combined_trenda, aes(x = as_date(Week), y = as.numeric(Interest)/200, color = pretty_word), size = 1, alpha = 0.8) + 
+  geom_point(data = ww_data3a, aes(x = as_date(Date), y = value), alpha = 0.3) +
+  # geom_ribbon(data = filter(combined_trend2, as_date(Week) > as_date("2021-01-01")), aes(xmin = as_date(min_date), xmax = as_date(max_date)), color = "grey", alpha = 0.3) + 
+  theme_bw() +
+  scale_x_date(date_labels = "%b %Y") +
+  scale_color_manual(values = c("#E85F5C", "#7D8491", "#E0C200", "#57C4E5")) + 
+  labs(x = "",
+       #y = "Google Trends Interest Count", 
+       color = "Keyword") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "PMMoV-Normalized Wastewater Detection",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis( trans=~.*200, name="Google Trends Interest Count")
   ) +
   facet_wrap(.~organism+location, scale = "free")
 
