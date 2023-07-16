@@ -10,11 +10,11 @@ library(lubridate)
 
 # solids 
 solid_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/solid_wastewater_data_all_cities.csv")
-
+solid_ww <- filter(solid_ww, organism != "SARS-CoV-2")
 
 # covid ww influent
 covid_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/covid_wastewater_data_all_cities.csv")
-
+covid_ww <- filter(covid_ww, type != "SOLID")
 
 # norovirus ww influent
 noro_ww <- read.csv("~/UofM_Work/sewer_conference_google_trends/wwtp_sample_data/norov_wastewater_data_all_cities.csv")
@@ -27,6 +27,7 @@ ww_data$variable[is.na(ww_data$variable)] <- ""
 
 ww_data <- filter(ww_data, organism %in% c("RSV", "Norovirus", "Influenza A", "SARS-CoV-2") & variable != "N2")
 
+ww_data <- ww_data %>% arrange(city, organism, Date) %>% distinct(Date, city, organism, .keep_all = TRUE)
 
 ################################################################################
 # read in google trends data
@@ -181,7 +182,7 @@ corrs <- rbind(value_correlations, value_correlations2)
 corrs <- filter(corrs, !is.na(over_limit))
 
 
-a <- filter(value_correlations, organism == "SARS-CoV-2" & type == "SOLID")
+a <- filter(value_correlations, organism == "Norovirus")
 a$fully <- paste0(a$location, " + ", a$pretty_word)
 
 ggplot(a, aes(x = city, y = fully, fill = correlation)) + 
@@ -193,3 +194,48 @@ ggplot(a, aes(x = city, y = fully, fill = correlation)) +
        fill = "Correlation", 
        title = paste0(unique(a$pretty_title))) + 
   geom_text(data = a, aes(x = city, y = fully, label = round(correlation, 4)))
+
+
+
+a <- filter(value_correlations, organism == "SARS-CoV-2")
+a$fully <- paste0(a$location, " + ", a$pretty_word)
+
+ggplot(a, aes(x = city, y = fully, fill = correlation)) + 
+  geom_tile() +
+  scale_fill_gradient2(limits=c(-1, 1), breaks=seq(-1,1,by=0.25), low="#3B3561", mid = "white", high="#51A3A3", midpoint = 0) + 
+  theme_bw() + 
+  labs(x = "", 
+       y = "", 
+       fill = "Correlation", 
+       title = paste0(unique(a$pretty_title))) + 
+  geom_text(data = a, aes(x = city, y = fully, label = round(correlation, 4)))
+
+
+a <- filter(value_correlations, organism == "RSV")
+a$fully <- paste0(a$location, " + ", a$pretty_word)
+
+ggplot(a, aes(x = city, y = fully, fill = correlation)) + 
+  geom_tile() +
+  scale_fill_gradient2(limits=c(-1, 1), breaks=seq(-1,1,by=0.25), low="#3B3561", mid = "white", high="#51A3A3", midpoint = 0) + 
+  theme_bw() + 
+  labs(x = "", 
+       y = "", 
+       fill = "Correlation", 
+       title = paste0(unique(a$pretty_title))) + 
+  geom_text(data = a, aes(x = city, y = fully, label = round(correlation, 4)))
+
+
+
+a <- filter(value_correlations, organism == "Influenza A")
+a$fully <- paste0(a$location, " + ", a$pretty_word)
+
+ggplot(a, aes(x = city, y = fully, fill = correlation)) + 
+  geom_tile() +
+  scale_fill_gradient2(limits=c(-1, 1), breaks=seq(-1,1,by=0.25), low="#3B3561", mid = "white", high="#51A3A3", midpoint = 0) + 
+  theme_bw() + 
+  labs(x = "", 
+       y = "", 
+       fill = "Correlation", 
+       title = paste0(unique(a$pretty_title))) + 
+  geom_text(data = a, aes(x = city, y = fully, label = round(correlation, 4)))
+
